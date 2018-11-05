@@ -83,13 +83,13 @@ const uint64_t MAXIMUM_MIXIN_V1                              = 3;
 const uint64_t MINIMUM_MIXIN_V2                              = 3;
 const uint64_t MAXIMUM_MIXIN_V2                              = 3;
 
-const uint64_t MINIMUM_MIXIN_V3                              = 3;
+const uint64_t MINIMUM_MIXIN_V3                              = 0;
 const uint64_t MAXIMUM_MIXIN_V3                              = 3;
 
 /* The heights to activate the mixin limits at */
 const uint32_t MIXIN_LIMITS_V1_HEIGHT                        = 0;
-const uint32_t MIXIN_LIMITS_V2_HEIGHT                        = 520000; // aprox 1yr from launch at 60s blocks
-const uint32_t MIXIN_LIMITS_V3_HEIGHT                        = 1040000; // aprox 2yrs from launch at 60s blocks
+const uint32_t MIXIN_LIMITS_V2_HEIGHT                        = 10100; 
+const uint32_t MIXIN_LIMITS_V3_HEIGHT                        = 30000; 
 
 /* The mixin to use by default with zedwallet and turtle-service */
 /* DEFAULT_MIXIN_V0 is the mixin used before MIXIN_LIMITS_V1_HEIGHT is started */
@@ -146,16 +146,18 @@ static_assert(UPGRADE_VOTING_WINDOW > 1, "Bad UPGRADE_VOTING_WINDOW");
 /* Block heights we are going to have hard forks at */
 const uint64_t FORK_HEIGHTS[] =
 {
-    50000,  // 0  **HERE**
-    130000,  // 1 130,000 blocks is approx 3 months >> 1 block / min, 60/hr, etc
-    260000,  // 2
-    390000,  // 3
-    520000,  // 4
-    650000,  // 5
+    10100,   // 0  
+    30000,   // 1  **HERE**
+    60000,   // 2 
+    130000,  // 3  130,000 blocks is approx 3 months >> 1 block / min, 60/hr, etc
+    260000,  // 4
+    390000,  // 5
+    520000,  // 6
+    650000,  // 7
 };
 
 /* MAKE SURE TO UPDATE THIS VALUE WITH EVERY MAJOR RELEASE BEFORE A FORK */
-const uint64_t SOFTWARE_SUPPORTED_FORK_INDEX                 = 0;
+const uint64_t SOFTWARE_SUPPORTED_FORK_INDEX                 = 1;
 
 const uint64_t FORK_HEIGHTS_SIZE = sizeof(FORK_HEIGHTS) / sizeof(*FORK_HEIGHTS);
 
@@ -186,6 +188,7 @@ const uint8_t  BLOCK_MAJOR_VERSION_1                         =  1;
 const uint8_t  BLOCK_MAJOR_VERSION_2                         =  2;
 const uint8_t  BLOCK_MAJOR_VERSION_3                         =  3;
 const uint8_t  BLOCK_MAJOR_VERSION_4                         =  4;
+
 const uint8_t  BLOCK_MINOR_VERSION_0                         =  0;
 const uint8_t  BLOCK_MINOR_VERSION_1                         =  1;
 
@@ -202,7 +205,7 @@ const size_t   P2P_LOCAL_GRAY_PEERLIST_LIMIT                 =  5000;
 
 // P2P Network Configuration Section - This defines our current P2P network version
 // and the minimum version for communication between nodes
-const uint8_t  P2P_CURRENT_VERSION                           = 3;
+const uint8_t  P2P_CURRENT_VERSION                           = 4;
 const uint8_t  P2P_MINIMUM_VERSION                           = 2;
 // This defines the number of versions ahead we must see peers before we start displaying
 // warning messages that we need to upgrade our software.
