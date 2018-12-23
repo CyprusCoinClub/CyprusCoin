@@ -98,6 +98,12 @@ const uint64_t DEFAULT_MIXIN_V1                              = MAXIMUM_MIXIN_V1;
 const uint64_t DEFAULT_MIXIN_V2                              = MAXIMUM_MIXIN_V2;
 const uint64_t DEFAULT_MIXIN_V3                              = MAXIMUM_MIXIN_V3;
 
+/* As well as the above Mixin Values, zedwallet also has 2x config params
+     1) WalletConfig::mixinZeroDisabled
+     2) WalletConfig::mixinZeroDisabledHeight
+      - see the notes in WAlletConfig.h for details
+  Ensure these values are correct as well - else things are not going to work as expected */
+
 const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(10);
 const uint64_t DEFAULT_DUST_THRESHOLD_V2                     = UINT64_C(0);
 

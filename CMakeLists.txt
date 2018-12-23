@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.6)
-project(TurtleCoin)
+project(CyprusCoin)
 
 # Required for finding Threads on ARM
 enable_language(C)
