@@ -33,6 +33,13 @@
 # 4. make -j
 
 cmake_minimum_required(VERSION 2.8.12)
+
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+  message(STATUS "Found ccache package... Activating...")
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
+
 project(rocksdb)
 enable_language(CXX)
 enable_language(C)
@@ -181,6 +188,12 @@ else()
   endif()
 endif()
 
+if(APPLE AND CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    # Need to build against libc++ instead of libstc++ on apple
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -nostdinc++ -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -nodefaultlibs -lc++ -lc++abi -lm -lc -lgcc -lgcc_eh")
+endif()
+
+
 include(CheckCCompilerFlag)
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "ppc64le")
   CHECK_C_COMPILER_FLAG("-maltivec" HAS_ALTIVEC)
@@ -251,7 +264,7 @@ if(ENABLE_THREAD_LOCAL)
   endif()
 endif()
 
-option(FAIL_ON_WARNINGS "Treat compile warnings as errors" ON)
+option(FAIL_ON_WARNINGS "Treat compile warnings as errors" OFF)
 if(FAIL_ON_WARNINGS)
   if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WX")

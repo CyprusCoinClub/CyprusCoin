@@ -9,6 +9,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <string>
 #include <limits>
 #include <initializer_list>
 #include <boost/uuid/uuid.hpp>
@@ -40,9 +41,6 @@ const uint64_t LWMA_2_DIFFICULTY_BLOCK_INDEX                 = 1;
 const uint64_t LWMA_2_DIFFICULTY_BLOCK_INDEX_V2              = 2;
 const uint64_t LWMA_2_DIFFICULTY_BLOCK_INDEX_V3              = 3;
 
-const uint64_t DIFFICULTY_WINDOW_V3                          = 60;
-const uint64_t DIFFICULTY_BLOCKS_COUNT_V3                    = DIFFICULTY_WINDOW_V3 + 1;
-
 const unsigned EMISSION_SPEED_FACTOR                         = 18;
 static_assert(EMISSION_SPEED_FACTOR <= 8 * sizeof(uint64_t), "Bad EMISSION_SPEED_FACTOR");
 
@@ -62,6 +60,7 @@ TurtleCoind --print-genesis-tx --genesis-block-reward-address TRTLv2Fyavy8CXG8BP
 * You should see your premine appear in the previously generated wallet.
 */
 const char     GENESIS_COINBASE_TX_HEX[]                     = "011401ff000180e09e9c8f1602ff4f805ee994209b7076fcea67cb2c56fd95bf9b8a796a82fa0aa28904bf657721015a1134d78c4e2c12798b8412279fcf4362b32a425fb01af15796cd26c84afa58";
+static_assert(sizeof(GENESIS_COINBASE_TX_HEX)/sizeof(*GENESIS_COINBASE_TX_HEX) != 1, "GENESIS_COINBASE_TX_HEX must not be empty.");
 
 /* This is the unix timestamp of the first "mined" block (technically block 2, not the genesis block)
    You can get this value by doing "print_block 2" in TurtleCoind. It is used to know what timestamp
@@ -77,6 +76,7 @@ const size_t   CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE        = 600;
 const size_t   CRYPTONOTE_DISPLAY_DECIMAL_POINT              = 6;
 const uint64_t MINIMUM_FEE                                   = UINT64_C(1000);
 
+/* This section defines our minimum and maximum mixin counts required for transactions */
 const uint64_t MINIMUM_MIXIN_V1                              = 0;
 const uint64_t MAXIMUM_MIXIN_V1                              = 3;
 
@@ -111,9 +111,13 @@ const uint32_t DUST_THRESHOLD_V2_HEIGHT                      = MIXIN_LIMITS_V2_H
 const uint32_t FUSION_DUST_THRESHOLD_HEIGHT_V2               = 40000;
 
 const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 60 * 60 / DIFFICULTY_TARGET;
+
 const size_t   DIFFICULTY_WINDOW                             = 17;
 const size_t   DIFFICULTY_WINDOW_V1                          = 2880;
 const size_t   DIFFICULTY_WINDOW_V2                          = 2880;
+const uint64_t DIFFICULTY_WINDOW_V3                          = 60;
+const uint64_t DIFFICULTY_BLOCKS_COUNT_V3                    = DIFFICULTY_WINDOW_V3 + 1;
+
 const size_t   DIFFICULTY_CUT                                = 0;  // timestamps to cut after sorting
 const size_t   DIFFICULTY_CUT_V1                             = 60;
 const size_t   DIFFICULTY_CUT_V2                             = 60;
@@ -126,6 +130,12 @@ const size_t   MAX_BLOCK_SIZE_INITIAL                        = 100000;
 const uint64_t MAX_BLOCK_SIZE_GROWTH_SPEED_NUMERATOR         = 100 * 1024;
 const uint64_t MAX_BLOCK_SIZE_GROWTH_SPEED_DENOMINATOR       = 365 * 24 * 60 * 60 / DIFFICULTY_TARGET;
 const uint64_t MAX_EXTRA_SIZE                                = 140000;
+const uint64_t MAX_EXTRA_SIZE_V2                             = 1024;
+const uint64_t MAX_EXTRA_SIZE_V2_HEIGHT                      = 280000;
+
+/* For new projects forked from this code base, this value should be
+   changed to 0 to prevent a possible transaction bloat exploit */
+const uint64_t TRANSACTION_SIGNATURE_COUNT_VALIDATION_HEIGHT = 280000;
 
 const uint64_t CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_BLOCKS     = 1;
 const uint64_t CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_SECONDS    = DIFFICULTY_TARGET * CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_BLOCKS;
@@ -138,11 +148,12 @@ const size_t   FUSION_TX_MAX_SIZE                            = CRYPTONOTE_BLOCK_
 const size_t   FUSION_TX_MIN_INPUT_COUNT                     = 12;
 const size_t   FUSION_TX_MIN_IN_OUT_COUNT_RATIO              = 4;
 
-const uint32_t KEY_IMAGE_CHECKING_BLOCK_INDEX                = 0;
 const uint32_t UPGRADE_HEIGHT_V2                             = 1;
 const uint32_t UPGRADE_HEIGHT_V3                             = 2;
 const uint32_t UPGRADE_HEIGHT_V4                             = 3; // Upgrade height for CN-Lite Variant 1 switch.
-const uint32_t UPGRADE_HEIGHT_CURRENT                        = UPGRADE_HEIGHT_V4;
+const uint32_t UPGRADE_HEIGHT_V5                             = 280000; // Upgrade height for CN-Turtle Variant 2 switch.
+const uint32_t UPGRADE_HEIGHT_CURRENT                        = UPGRADE_HEIGHT_V5;
+
 const unsigned UPGRADE_VOTING_THRESHOLD                      = 90;               // percent
 const uint32_t UPGRADE_VOTING_WINDOW                         = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
 const uint32_t UPGRADE_WINDOW                                = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
@@ -153,17 +164,17 @@ static_assert(UPGRADE_VOTING_WINDOW > 1, "Bad UPGRADE_VOTING_WINDOW");
 const uint64_t FORK_HEIGHTS[] =
 {
     10100,   // 0  
-    30000,   // 1  **HERE**
-    60000,   // 2 
-    130000,  // 3  130,000 blocks is approx 3 months >> 1 block / min, 60/hr, etc
-    260000,  // 4
-    390000,  // 5
-    520000,  // 6
-    650000,  // 7
+    30000,   // 1  
+    280000,  // 2 **HERE** ~2019-05-03 23:37:00
+    410000,  // 3  ~2019-08-02 06:17:00 130,000 blocks is approx 3 months >> 1 block / min, 60/hr, etc
+    540000,  // 4
+    670000,  // 5
+    800000,  // 6
+    930000,  // 7
 };
 
 /* MAKE SURE TO UPDATE THIS VALUE WITH EVERY MAJOR RELEASE BEFORE A FORK */
-const uint64_t SOFTWARE_SUPPORTED_FORK_INDEX                 = 1;
+const uint64_t SOFTWARE_SUPPORTED_FORK_INDEX                 = 2;
 
 const uint64_t FORK_HEIGHTS_SIZE = sizeof(FORK_HEIGHTS) / sizeof(*FORK_HEIGHTS);
 
@@ -190,16 +201,18 @@ const char     CRYPTONOTE_NAME[]                             = "CyprusCoin";
 const uint8_t  TRANSACTION_VERSION_1                         =  1;
 const uint8_t  TRANSACTION_VERSION_2                         =  2;
 const uint8_t  CURRENT_TRANSACTION_VERSION                   =  TRANSACTION_VERSION_1;
+
 const uint8_t  BLOCK_MAJOR_VERSION_1                         =  1;
 const uint8_t  BLOCK_MAJOR_VERSION_2                         =  2;
 const uint8_t  BLOCK_MAJOR_VERSION_3                         =  3;
 const uint8_t  BLOCK_MAJOR_VERSION_4                         =  4;
+const uint8_t  BLOCK_MAJOR_VERSION_5                         =  5;
 
 const uint8_t  BLOCK_MINOR_VERSION_0                         =  0;
 const uint8_t  BLOCK_MINOR_VERSION_1                         =  1;
 
 const size_t   BLOCKS_IDS_SYNCHRONIZING_DEFAULT_COUNT        =  10000;  //by default, blocks ids count in synchronizing
-const size_t   BLOCKS_SYNCHRONIZING_DEFAULT_COUNT            =  100;    //by default, blocks count in blocks downloading
+const uint64_t BLOCKS_SYNCHRONIZING_DEFAULT_COUNT            =  100;    //by default, blocks count in blocks downloading
 const size_t   COMMAND_RPC_GET_BLOCKS_FAST_MAX_COUNT         =  1000;
 
 const int      P2P_DEFAULT_PORT                              =  11974;
@@ -211,8 +224,12 @@ const size_t   P2P_LOCAL_GRAY_PEERLIST_LIMIT                 =  5000;
 
 // P2P Network Configuration Section - This defines our current P2P network version
 // and the minimum version for communication between nodes
-const uint8_t  P2P_CURRENT_VERSION                           = 4;
-const uint8_t  P2P_MINIMUM_VERSION                           = 2;
+const uint8_t  P2P_CURRENT_VERSION                           = 6;
+const uint8_t  P2P_MINIMUM_VERSION                           = 4;
+
+// This defines the minimum P2P version required for lite blocks propogation
+const uint8_t P2P_LITE_BLOCKS_PROPOGATION_VERSION            = 6;
+
 // This defines the number of versions ahead we must see peers before we start displaying
 // warning messages that we need to upgrade our software.
 const uint8_t  P2P_UPGRADE_WINDOW                            = 2;
@@ -229,7 +246,13 @@ const uint64_t P2P_DEFAULT_INVOKE_TIMEOUT                    = 60 * 2 * 1000; //
 const size_t   P2P_DEFAULT_HANDSHAKE_INVOKE_TIMEOUT          = 5000;          // 5 seconds
 const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "";
 
+const uint64_t DATABASE_WRITE_BUFFER_MB_DEFAULT_SIZE         = 256;
+const uint64_t DATABASE_READ_BUFFER_MB_DEFAULT_SIZE          = 10;
+const uint32_t DATABASE_DEFAULT_MAX_OPEN_FILES               = 100;
+const uint16_t DATABASE_DEFAULT_BACKGROUND_THREADS_COUNT     = 2;
+
 const char     LATEST_VERSION_URL[]                          = "http://latest.cypruscoin.club";
+const std::string LICENSE_URL                                = "https://github.com/CyprusCoinClub/CyprusCoin/blob/master/LICENSE";
 const static   boost::uuids::uuid CRYPTONOTE_NETWORK         =
 {
     {  0xd7, 0x4f, 0x19, 0x25, 0x37, 0x2b, 0xd7, 0x14, 0xfb, 0xe, 0xd7, 0xa4, 0xb6, 0xc1, 0x43, 0xe9  }
