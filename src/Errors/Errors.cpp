@@ -167,7 +167,7 @@ std::string Error::getErrorMessage() const
         case DAEMON_ERROR:
         {
             return "An error occured whilst the daemon processed the request. "
-                   "Possibly our software is outdated, the daemon is faulty, "
+                   "Possibly your software is outdated, the daemon is faulty, "
                    "or there is a programmer error. Check your daemon logs "
                    "for more info. (set_log 4)";
         }

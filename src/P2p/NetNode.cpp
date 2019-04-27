@@ -1099,7 +1099,7 @@ std::string print_peerlist_to_string(const std::list<PeerlistEntry>& pl) {
       context.m_state = CryptoNoteConnectionContext::state_shutdown;
       return 1;
     } else if (arg.node_data.version > CryptoNote::P2P_CURRENT_VERSION) {
-      logger(Logging::WARNING) << context << "Our software may be out of date. Please visit: "
+      logger(Logging::WARNING) << context << "Your software may be out of date. Please visit: "
         << CryptoNote::LATEST_VERSION_URL << " for the latest version.";
     }
 
