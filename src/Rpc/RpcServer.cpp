@@ -1,6 +1,8 @@
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2018, The TurtleCoin Developers
 // Copyright (c) 2018, The Karai Developers
+// Copyright (c) 2016-2018 Karbowanec developers
+// Copyright (c) 2019, The CyprusCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -581,6 +583,7 @@ bool RpcServer::onGetTransactionHashesByPaymentId(const COMMAND_RPC_GET_TRANSACT
 
 bool RpcServer::on_get_info(const COMMAND_RPC_GET_INFO::request& req, COMMAND_RPC_GET_INFO::response& res) {
   res.height = m_core.getTopBlockIndex() + 1;
+  res.top_block_hash = Common::podToHex(m_core.getBlockHashByIndex(m_core.get_current_blockchain_height() - 1));
   res.difficulty = m_core.getDifficultyForNextBlock();
   res.tx_count = m_core.getBlockchainTransactionCount() - res.height; //without coinbase
   res.tx_pool_size = m_core.getPoolTransactionCount();
@@ -588,6 +591,7 @@ bool RpcServer::on_get_info(const COMMAND_RPC_GET_INFO::request& req, COMMAND_RP
   uint64_t total_conn = m_p2p.get_connections_count();
   res.outgoing_connections_count = m_p2p.get_outgoing_connections_count();
   res.incoming_connections_count = total_conn - res.outgoing_connections_count;
+  res.rpc_connections_count = get_connections_count();
   res.white_peerlist_size = m_p2p.getPeerlistManager().get_white_peers_count();
   res.grey_peerlist_size = m_p2p.getPeerlistManager().get_gray_peers_count();
   res.last_known_block_index = std::max(static_cast<uint32_t>(1), m_protocol.getObservedHeight()) - 1;
@@ -599,7 +603,7 @@ bool RpcServer::on_get_info(const COMMAND_RPC_GET_INFO::request& req, COMMAND_RP
   res.testnet = m_core.getCurrency().isTestnet();
   res.major_version = m_core.getBlockDetails(m_core.getTopBlockIndex()).majorVersion;
   res.minor_version = m_core.getBlockDetails(m_core.getTopBlockIndex()).minorVersion;
-  res.version = PROJECT_VERSION;
+  res.version = PROJECT_VERSION_LONG;
   res.status = CORE_RPC_STATUS_OK;
   res.start_time = (uint64_t)m_core.getStartTime();
   return true;

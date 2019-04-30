@@ -1,6 +1,8 @@
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2018, The TurtleCoin Developers
 // Copyright (c) 2018, The Karai Developers
+// Copyright (c) 2016-2018 Karbowanec developers
+// Copyright (c) 2019, The CyprusCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -318,12 +320,14 @@ struct COMMAND_RPC_GET_INFO {
   struct response {
     std::string status;
     uint64_t height;
+    std::string top_block_hash;
     uint64_t difficulty;
     uint64_t tx_count;
     uint64_t tx_pool_size;
     uint64_t alt_blocks_count;
     uint64_t outgoing_connections_count;
     uint64_t incoming_connections_count;
+    uint64_t rpc_connections_count;
     uint64_t white_peerlist_size;
     uint64_t grey_peerlist_size;
     uint32_t last_known_block_index;
@@ -341,12 +345,14 @@ struct COMMAND_RPC_GET_INFO {
     void serialize(ISerializer &s) {
       KV_MEMBER(status)
       KV_MEMBER(height)
+      KV_MEMBER(top_block_hash)
       KV_MEMBER(difficulty)
       KV_MEMBER(tx_count)
       KV_MEMBER(tx_pool_size)
       KV_MEMBER(alt_blocks_count)
       KV_MEMBER(outgoing_connections_count)
       KV_MEMBER(incoming_connections_count)
+      KV_MEMBER(rpc_connections_count)
       KV_MEMBER(white_peerlist_size)
       KV_MEMBER(grey_peerlist_size)
       KV_MEMBER(last_known_block_index)
