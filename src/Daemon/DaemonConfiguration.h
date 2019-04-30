@@ -1,4 +1,5 @@
 // Copyright (c) 2018, The TurtleCoin Developers
+// Copyright (c) 2019, The CyprusCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -37,6 +38,7 @@ namespace DaemonConfig {
       enableBlockExplorer = false;
       localIp = false;
       hideMyPort = false;
+      p2pResetPeerstate = false;
       help = false;
       version = false;
       osVersion = false;
@@ -71,6 +73,7 @@ namespace DaemonConfig {
     bool enableBlockExplorer;
     bool localIp;
     bool hideMyPort;
+    bool p2pResetPeerstate;
 
     std::string configFile;
     std::string outputFile;
