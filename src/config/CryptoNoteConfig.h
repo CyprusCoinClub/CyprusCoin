@@ -131,11 +131,11 @@ const uint64_t MAX_BLOCK_SIZE_GROWTH_SPEED_NUMERATOR         = 100 * 1024;
 const uint64_t MAX_BLOCK_SIZE_GROWTH_SPEED_DENOMINATOR       = 365 * 24 * 60 * 60 / DIFFICULTY_TARGET;
 const uint64_t MAX_EXTRA_SIZE                                = 140000;
 const uint64_t MAX_EXTRA_SIZE_V2                             = 1024;
-const uint64_t MAX_EXTRA_SIZE_V2_HEIGHT                      = 280000;
+const uint64_t MAX_EXTRA_SIZE_V2_HEIGHT                      = 282500;
 
 /* For new projects forked from this code base, this value should be
    changed to 0 to prevent a possible transaction bloat exploit */
-const uint64_t TRANSACTION_SIGNATURE_COUNT_VALIDATION_HEIGHT = 280000;
+const uint64_t TRANSACTION_SIGNATURE_COUNT_VALIDATION_HEIGHT = 282500;
 
 const uint64_t CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_BLOCKS     = 1;
 const uint64_t CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_SECONDS    = DIFFICULTY_TARGET * CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_BLOCKS;
@@ -151,7 +151,7 @@ const size_t   FUSION_TX_MIN_IN_OUT_COUNT_RATIO              = 4;
 const uint32_t UPGRADE_HEIGHT_V2                             = 1;
 const uint32_t UPGRADE_HEIGHT_V3                             = 2;
 const uint32_t UPGRADE_HEIGHT_V4                             = 3; // Upgrade height for CN-Lite Variant 1 switch.
-const uint32_t UPGRADE_HEIGHT_V5                             = 280000; // Upgrade height for CN-Turtle Variant 2 switch.
+const uint32_t UPGRADE_HEIGHT_V5                             = 282500; // Upgrade height for CN-Turtle Variant 2 switch.
 const uint32_t UPGRADE_HEIGHT_CURRENT                        = UPGRADE_HEIGHT_V5;
 
 const unsigned UPGRADE_VOTING_THRESHOLD                      = 90;               // percent
@@ -165,12 +165,12 @@ const uint64_t FORK_HEIGHTS[] =
 {
     10100,   // 0  
     30000,   // 1  
-    280000,  // 2 **HERE** ~2019-05-03 23:30:00 UTC
-    410000,  // 3  ~2019-08-02 06:17:00 UTC - 130,000 blocks is approx 3 months >> 1 block / min, 60/hr, etc
-    540000,  // 4
-    670000,  // 5
-    800000,  // 6
-    930000,  // 7
+    282500,  // 2  **HERE** ~2019-05-05 17:26:00 UTC
+    408200,  // 3  ~2019-08-01
+    540700,  // 4  ~2019-11-01
+    673200,  // 5  ~2020-02-01
+    802800,  // 6  ~2020-05-01
+    935300,  // 7  ~2020-08-01
 };
 
 /* MAKE SURE TO UPDATE THIS VALUE WITH EVERY MAJOR RELEASE BEFORE A FORK */
