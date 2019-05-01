@@ -430,7 +430,15 @@ uint64_t Currency::getNextDifficulty(uint8_t version, uint32_t blockIndex, std::
 {
     if (blockIndex >= CryptoNote::parameters::LWMA_2_DIFFICULTY_BLOCK_INDEX_V3)
     {
+      if(blockIndex >= TESTNET_STATIC_DIFFICULTY_BLOCK_INDEX_START && blockIndex <= TESTNET_STATIC_DIFFICULTY_BLOCK_INDEX_END)
+      {
+        return TESTNET_STATIC_DIFFICULTY;
+      }
+      else
+      {
         return nextDifficultyV5(timestamps, cumulativeDifficulties);
+      }
+      
     }
     else if (blockIndex >= CryptoNote::parameters::LWMA_2_DIFFICULTY_BLOCK_INDEX_V2)
     {

@@ -600,7 +600,7 @@ bool RpcServer::on_get_info(const COMMAND_RPC_GET_INFO::request& req, COMMAND_RP
   res.supported_height = CryptoNote::parameters::FORK_HEIGHTS_SIZE == 0 ? 0 : CryptoNote::parameters::FORK_HEIGHTS[CryptoNote::parameters::CURRENT_FORK_INDEX];
   res.hashrate = (uint32_t)round(res.difficulty / CryptoNote::parameters::DIFFICULTY_TARGET);
   res.synced = ((uint64_t)res.height == (uint64_t)res.network_height);
-  res.testnet = m_core.getCurrency().isTestnet();
+  res.testnet = true;
   res.major_version = m_core.getBlockDetails(m_core.getTopBlockIndex()).majorVersion;
   res.minor_version = m_core.getBlockDetails(m_core.getTopBlockIndex()).minorVersion;
   res.version = PROJECT_VERSION_LONG;
